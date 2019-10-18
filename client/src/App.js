@@ -7,11 +7,16 @@ import Login from "./components/Login";
 import "./styles.scss";
 
 function App(props) {
+const logout = () => {
+  localStorage.clear();
+  props.history.replace('/');
+}
+
   return (
     <Router>
       <div className="App">
         <Route exact path="/" component={Login} />
-        <NavLink to='/bubble'>Bubble</NavLink>
+        <NavLink to='/' onClick={logout}>Logout</NavLink>
         
         {/* 
           Build a PrivateRoute component that will 

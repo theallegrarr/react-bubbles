@@ -26,13 +26,19 @@ const ColorList = ({ colors, updateColors, reload }) => {
     
     withAuth().put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
       .then(res => {
-        console.log(res.data);
         reload();
+        setEditing(false);
       }).catch(e => alert(e));
   };
 
   const deleteColor = color => {
     // make a delete request to delete this color
+    setEditing(false);
+    withAuth().delete(`http://localhost:5000/api/colors/${color.id}`)
+      .then(res => {
+        reload();
+        setEditing(false);
+      }).catch(e => alert(e));
   };
 
   return (
