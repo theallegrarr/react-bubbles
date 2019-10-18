@@ -22,10 +22,10 @@ const Login = (props) => {
         alert(error.response.data.message);
       });
     }
-    
+
   // when you have handled the token, navigate to the BubblePage route
   return (
-    <>
+    <div className='login-page'>
       <h1>Welcome to the Bubble App!</h1>
       <div className='login-inputs'>
         username <input ref={usernameRef} type="text" />
@@ -36,7 +36,7 @@ const Login = (props) => {
       <div>
         <button onClick={submit}>Submit</button>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -9,7 +9,6 @@ import "./styles.scss";
 function App(props) {
 const logout = () => {
   localStorage.clear();
-  props.history.replace('/');
 }
 
   return (
