@@ -8,14 +8,26 @@ const initialColor = {
   code: { hex: "" }
 };
 
+const newColor = {
+  color: "",
+  code: { hex: "" }
+};
+
 const ColorList = ({ colors, updateColors, reload }) => {
   
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
+  const [adding, setAdding] = useState(false);
+  const [colorToAdd, setColorToAdd] = useState(newColor);
   
   const editColor = color => {
     setEditing(true);
     setColorToEdit(color);
+  };
+
+  const addingColor = color => {
+    setAdding(true);
+    setColorToAdd(color);
   };
 
   const saveEdit = (e) => {
@@ -31,6 +43,16 @@ const ColorList = ({ colors, updateColors, reload }) => {
       }).catch(e => alert(e));
   };
 
+  const addColor = (e) => {
+    e.preventDefault();
+    
+    withAuth().post(`http://localhost:5000/api/colors`, colorToAdd)
+      .then(res => {
+        reload();
+        setAdding(false);
+      }).catch(e => alert(e));
+  };
+
   const deleteColor = color => {
     // make a delete request to delete this color
     setEditing(false);
@@ -40,6 +62,8 @@ const ColorList = ({ colors, updateColors, reload }) => {
         setEditing(false);
       }).catch(e => alert(e));
   };
+
+  
 
   return (
     <div className="colors-wrap">
@@ -87,6 +111,38 @@ const ColorList = ({ colors, updateColors, reload }) => {
           <div className="button-row">
             <button type="submit">save</button>
             <button onClick={() => setEditing(false)}>cancel</button>
+          </div>
+        </form>
+      )}
+      {!editing && !adding && (<button onClick={() => setAdding(true)}>Add</button>)
+      }
+      {adding && (
+        <form onSubmit={addColor}>
+          <legend>Add color</legend>
+          <label>
+            color name:
+            <input
+              onChange={e =>
+                setColorToAdd({ ...colorToAdd, color: e.target.value })
+              }
+              value={colorToAdd.color}
+            />
+          </label>
+          <label>
+            hex code:
+            <input
+              onChange={e =>
+                setColorToAdd({
+                  ...colorToAdd,
+                  code: { hex: e.target.value }
+                })
+              }
+              value={colorToAdd.code.hex}
+            />
+          </label>
+          <div className="button-row">
+            <button type="submit">save</button>
+            <button onClick={() => setAdding(false)}>cancel</button>
           </div>
         </form>
       )}
